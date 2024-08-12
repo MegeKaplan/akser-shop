@@ -1,4 +1,5 @@
 import { useAppContext } from "./context/AppContext";
+import Home from "./pages/Home";
 
 function App() {
   const { count, setCount } = useAppContext();
@@ -14,13 +15,7 @@ function App() {
 
   return (
     <>
-      <h1>Count {count}</h1>
-      <button className="bg-emerald-400" onClick={() => buttonHandler(1)}>
-        Increase 1
-      </button>
-      <button className="bg-red-400" onClick={() => buttonHandler(-1)}>
-        Decrease 1
-      </button>
+      <Home />
     </>
   );
 }
