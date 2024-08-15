@@ -2,8 +2,9 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import db from "./config/db/db_conn.js";
 import userRoutes from "./routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 const config = dotenv.config();
 
@@ -16,6 +17,8 @@ app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api", userRoutes);
+app.use("/api", productRoutes);
+app.use("/api", uploadRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is running..." });

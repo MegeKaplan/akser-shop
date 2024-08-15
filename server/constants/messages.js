@@ -5,5 +5,13 @@ export const MESSAGES = {
   USER_UPDATE_SUCCESS: "Kullanıcı başarıyla güncellendi.",
   USER_DELETE_SUCCESS: "Kullanıcı başarıyla silindi.",
   USER_NOT_FOUND: "Kullanıcı bulunamadı!",
+  PRODUCTS_FETCH_SUCCESS: "Ürünler başarıyla getirildi.",
+  PRODUCT_FETCH_SUCCESS: "Ürün bilgileri başarıyla getirildi.",
+  PRODUCT_CREATE_SUCCESS: "Ürün başarıyla oluşturuldu.",
+  PRODUCT_UPDATE_SUCCESS: "Ürün başarıyla güncellendi.",
+  PRODUCT_DELETE_SUCCESS: "Ürün başarıyla silindi.",
+  PRODUCT_NOT_FOUND: "Ürün bulunamadı!",
+  FILE_UPLOAD_SUCCESS: "Dosyalar başarıyla yüklendi.",
+  FILE_UPLOAD_ERROR: "Dosyalar yüklenirken bir hata oluştu!",
   ERROR_OCCURRED: "Bir hata oluştu!",
 };

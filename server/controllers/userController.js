@@ -53,7 +53,7 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const updatedUser = { ...req.body, updated_at: new Date() };
+    const updatedUser = { ...req.body };
     const user = await db("users").select("*").where({ id: userId }).first();
     if (user) {
       await db("users")
@@ -73,7 +73,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const deletedUser = { is_deleted: true, updated_at: new Date() };
+    const deletedUser = { is_deleted: true };
     await db("users").select("*").where({ id: userId }).update(deletedUser);
     res.status(201).json({ message: MESSAGES.USER_DELETE_SUCCESS });
   } catch (error) {
