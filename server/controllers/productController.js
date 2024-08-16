@@ -1,11 +1,12 @@
 import db from "../config/db/db_conn.js";
 import { MESSAGES } from "../constants/messages.js";
 
-export const getAllProducts = async (req, res) => {
+export const getProducts = async (req, res) => {
+  const query = req.query;
   try {
     const products = await db("products")
       .select("*")
-      .where({ is_deleted: false });
+      .where({ is_deleted: false, ...query });
     res
       .status(201)
       .json({ message: MESSAGES.PRODUCTS_FETCH_SUCCESS, response: products });

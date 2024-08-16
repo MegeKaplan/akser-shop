@@ -1,11 +1,12 @@
 import db from "../config/db/db_conn.js";
 import { MESSAGES } from "../constants/messages.js";
 
-export const getAllCategories = async (req, res) => {
+export const getCategories = async (req, res) => {
+  const query = req.query;
   try {
     const categories = await db("categories")
       .select("*")
-      .where({ is_deleted: false });
+      .where({ is_deleted: false, ...query });
     res.status(201).json({
       message: MESSAGES.CATEGORIES_FETCH_SUCCESS,
       response: categories,
