@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 
 const config = dotenv.config();
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api", userRoutes);
 app.use("/api", productRoutes);
+app.use("/api", categoryRoutes);
 app.use("/api", uploadRoutes);
 
 app.get("/", (req, res) => {
