@@ -43,6 +43,7 @@ export const createProduct = async (req, res) => {
   try {
     const product = {
       ...req.body,
+      tags: JSON.stringify(req.body.tags),
       image_urls: JSON.stringify(req.body.image_urls),
     };
     const [productId] = await db("products").insert(product);
@@ -59,7 +60,11 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const updatedProduct = { ...req.body };
+    const updatedProduct = {
+      ...req.body,
+      tags: JSON.stringify(req.body.tags),
+      image_urls: JSON.stringify(req.body.image_urls),
+    };
     const product = await db("products")
       .select("*")
       .where({ id: productId })
