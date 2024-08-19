@@ -11,7 +11,6 @@ const Header: React.FC = () => {
   const [headerMenuState, setHeaderMenuState] = useState<boolean>(false);
   const headerMenuToggle = () => {
     setHeaderMenuState(!headerMenuState);
-    console.log(headerMenuState);
   };
 
   return (
