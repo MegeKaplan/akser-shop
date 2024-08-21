@@ -1,7 +1,31 @@
-import React, { useRef } from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { MESSAGES } from "../constants/messages";
+
+export interface Category {
+  id: number;
+  name: string;
+  description?: string | null;
+  is_active: boolean;
+  slug: string;
+  parent_category_id?: number | null;
+  display_order?: number | null;
+  is_featured: boolean;
+  additional_info?: string | null;
+  thumbnail_url?: string | null;
+  is_deleted: boolean;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
 const Nav: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const handleScroll = (e: any) => {
     if (scrollRef.current) {
@@ -9,48 +33,42 @@ const Nav: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/categories`
+        );
+        setCategories(response.data.response);
+      } catch (err) {
+        console.error(err);
+        setError(MESSAGES.ERROR_OCCURRED);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) return <p>{MESSAGES.CONTENT_LOADING}</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <nav
-      className="w-full flex flex-row items-center justify-start row-span-1 overflow-x-scroll select-none scroll-smooth"
+      className="w-full flex flex-row items-center justify-around overflow-x-scroll select-none scroll-smooth h-full row-span-3 px-1"
       ref={scrollRef}
       onWheel={handleScroll}
       style={{
-        scrollbarWidth: "none", // Firefox için scrollbar'ı gizler
-        msOverflowStyle: "none", // IE ve Edge için scrollbar'ı gizler
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
       }}
     >
-      {[
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-      ].map((item, index) => (
-        <div
-          key={index}
-          className="flex items-center justify-center bg-primary-500 px-5 py-2 pb-4 hover:bg-primary-600 cursor-pointer border-x-[1px] border-primary-400"
-        >
-          Kategori{index}
+      {categories.map((category, index) => (
+        <div key={index} className="flex items-center justify-center">
+          <span className="bg-secondary-150 px-3 py-2 m-1.5 whitespace-nowrap text-lg cursor-pointer hover:bg-primary-400 transition rounded-full">
+            {category.name}
+          </span>
         </div>
       ))}
     </nav>
