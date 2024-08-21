@@ -27,7 +27,7 @@ const Nav: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleScroll = (e: any) => {
+  const handleScroll = (e: React.WheelEvent) => {
     if (scrollRef.current) {
       scrollRef.current.scrollLeft -= (e.deltaY * 40) / 10;
     }
