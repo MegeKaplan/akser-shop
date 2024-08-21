@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { MESSAGES } from "../constants/messages";
+import { Link } from "react-router-dom";
 
 export interface Category {
   id: number;
@@ -66,9 +67,12 @@ const Nav: React.FC = () => {
     >
       {categories.map((category, index) => (
         <div key={index} className="flex items-center justify-center">
-          <span className="bg-secondary-150 px-3 py-2 m-1.5 whitespace-nowrap text-lg cursor-pointer hover:bg-primary-400 transition rounded-full">
+          <Link
+            to={`/category/${category.id}`}
+            className="bg-secondary-150 px-3 py-2 m-1.5 whitespace-nowrap text-lg cursor-pointer hover:bg-primary-400 transition rounded-full"
+          >
             {category.name}
-          </span>
+          </Link>
         </div>
       ))}
     </nav>

@@ -4,6 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaBars } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const iconSize = 21;
 
@@ -17,7 +18,9 @@ const Header: React.FC = () => {
     <>
       <header className="bg-secondary-50 w-full h-32 sm:h-32 grid grid-rows-7 border-b-[1px] place-items-center overflow-hidden pb-1.5">
         <div className="flex flex-row items-center justify-between w-full px-5 h-full row-span-4">
-          <div className="w-auto text-2xl sm:text-3xl">LOGO</div>
+          <Link to={"/"} className="w-auto text-2xl sm:text-3xl">
+            LOGO
+          </Link>
           {/* <div className="flex sm:hidden p-3">
           <FaSearch size={iconSize} />
         </div> */}

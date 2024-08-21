@@ -1,5 +1,8 @@
 import { useAppContext } from "./context/AppContext";
 import Home from "./pages/Home";
+import { Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   const { count, setCount } = useAppContext();
@@ -15,7 +18,11 @@ function App() {
 
   return (
     <>
-      <Home />
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/product/:productId" element={<ProductDetail />} />
+      </Routes>
     </>
   );
 }

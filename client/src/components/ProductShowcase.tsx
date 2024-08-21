@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MESSAGES } from "../constants/messages.ts";
+import { Link } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -75,7 +76,8 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ title, query }) => {
             ? JSON.parse(product.tags as string)
             : [];
           return (
-            <div
+            <Link
+              to={`/product/${product.id}`}
               key={product.id}
               className="col-span-1 bg-secondary-100 mx-2 grid grid-rows-7 h-80 w-80 md:w-auto border rounded-lg overflow-hidden"
             >
@@ -119,7 +121,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ title, query }) => {
                   </span>
                 )}
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
