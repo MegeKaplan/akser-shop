@@ -99,12 +99,15 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ title, query }) => {
                 </p>
                 {tagsArray.length > 0 ? (
                   <div
-                    className={`grid grid-cols-${tagsArray.length} gap-2 mt-2`}
+                    className={`grid gap-2 mt-2`}
+                    style={{
+                      gridTemplateColumns: `repeat(${tagsArray.length}, minmax(0, 1fr))`,
+                    }}
                   >
                     {tagsArray.map((tag: string, index: number) => (
                       <span
                         key={index}
-                        className="bg-gray-300 text-center text-sm py-1 px-2 rounded col-span-1"
+                        className="bg-gray-300 text-center text-sm py-1 px-2 rounded col-span-1 truncate"
                       >
                         {tag}
                       </span>
