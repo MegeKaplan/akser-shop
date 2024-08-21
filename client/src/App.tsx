@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import ProductDetail from "./pages/ProductDetail";
+import Footer from "./components/Footer";
 
 function App() {
   const { count, setCount } = useAppContext();
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
       </Routes>
+      <Footer />
     </>
   );
 }
