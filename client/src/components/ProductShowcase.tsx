@@ -66,7 +66,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ title, query }) => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="w-full px-2 md:px-5 text-md flex items-center justify-center flex-col mt-10">
+    <div className="w-full px-2 md:px-5 text-md flex items-center justify-center flex-col mt-5">
       <div className="w-full flex items-center justify-center md:justify-start">
         <h1 className="p-4 md:pl-2 text-2xl sm:text-3xl">{title}</h1>
       </div>
