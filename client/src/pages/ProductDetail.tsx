@@ -7,7 +7,10 @@ import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { FaCartPlus, FaTurkishLiraSign } from "react-icons/fa6";
+import { BsFillCartDashFill } from "react-icons/bs";
 import { FaShare } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 interface Product {
   id: number;
@@ -46,6 +49,12 @@ const ProductDetail: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [orderQuantity, setOrderQuantity] = useState(0);
+  const { cart, setCart } = useAppContext();
+  const [isInCart, setIsInCart] = useState(
+    cart.find((cartItem) => cartItem.productId === Number(productId))
+      ? true
+      : false
+  );
 
   const increaseOrderQuantity = (max: number) => {
     setOrderQuantity((prev) => Math.min(prev + 1, max));
@@ -59,8 +68,35 @@ const ProductDetail: React.FC = () => {
     console.log("Buy now button clicked!");
   };
 
-  const addToCart = () => {
-    console.log("Add to cart button clicked!");
+  const addToCart = (product: Product) => {
+    if (!isInCart && orderQuantity > 0) {
+      setCart([
+        ...cart,
+        { productId: product.id, orderQuantity: orderQuantity },
+      ]);
+      setIsInCart(true);
+      toast.success(
+        `${
+          product.name.length < 21
+            ? product.name
+            : product.name.slice(0, 18) + "..."
+        } sepetinize eklendi!`
+      );
+    }
+  };
+
+  const removeFromCart = (product: Product) => {
+    if (isInCart) {
+      setCart(cart.filter((cartItem) => cartItem.productId !== product.id));
+      setIsInCart(false);
+      toast.warning(
+        `${
+          product.name.length < 21
+            ? product.name
+            : product.name.slice(0, 18) + "..."
+        } sepetinizden çıkarıldı!`
+      );
+    }
   };
 
   useEffect(() => {
@@ -85,7 +121,10 @@ const ProductDetail: React.FC = () => {
   }, [productId]);
 
   if (loading) return <p>{MESSAGES.CONTENT_LOADING}</p>;
-  if (error) return <p>{error}</p>;
+  if (error) {
+    toast.error(error);
+    return <p>{error}</p>;
+  }
 
   return (
     <div className="w-full md:min-h-96 flex flex-col md:flex-row p-2 md:p-4">
@@ -174,13 +213,32 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
           <div className="w-full col-span-2">
-            <button
-              className="w-full bg-primary-500 text-white py-2 rounded hover:bg-primary-600 transition flex items-center justify-center"
-              onClick={() => addToCart()}
-            >
-              <FaCartPlus size={22} className="mr-2" />
-              Sepete Ekle
-            </button>
+            {isInCart ? (
+              <button
+                className="w-full bg-primary-500 text-white py-2 rounded hover:bg-primary-600 transition flex items-center justify-center"
+                onClick={() => removeFromCart(product!)}
+              >
+                <BsFillCartDashFill size={22} className="mr-2" />
+                Sepetten Çıkar (
+                {
+                  cart.find(
+                    (cartItem) => cartItem.productId === Number(productId)
+                  ).orderQuantity
+                }
+                )
+              </button>
+            ) : (
+              <button
+                className="w-full bg-primary-500 text-white py-2 rounded hover:bg-primary-600 transition flex items-center justify-center disabled:bg-primary-100 disabled:text-primary-500 disabled:cursor-not-allowed"
+                onClick={() => addToCart(product!)}
+                {...(Number(orderQuantity) === 0 && { disabled: true })}
+              >
+                <FaCartPlus size={22} className="mr-2" />
+                {Number(orderQuantity) === 0
+                  ? "Bir Ürün Ekleyin"
+                  : `Sepete Ekle (${orderQuantity})`}
+              </button>
+            )}
           </div>
           <div className="w-full col-span-1">
             <button className="w-full bg-emerald-500 text-white py-2 rounded hover:bg-emerald-600 transition flex items-center justify-center">

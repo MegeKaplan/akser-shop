@@ -1,22 +1,13 @@
-import { useAppContext } from "./context/AppContext";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import ProductDetail from "./pages/ProductDetail";
 import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toastifyContainerConfig } from "./config/toastifyConfig";
 
 function App() {
-  const { count, setCount } = useAppContext();
-
-  setCount(
-    localStorage.getItem("count") ? Number(localStorage.getItem("count")) : 0
-  );
-
-  const buttonHandler = (value: number) => {
-    setCount((prev) => prev + value);
-    localStorage.setItem("count", String(count + value));
-  };
-
   return (
     <>
       <Header />
@@ -25,6 +16,7 @@ function App() {
         <Route path="/product/:productId" element={<ProductDetail />} />
       </Routes>
       <Footer />
+      <ToastContainer {...toastifyContainerConfig} />
     </>
   );
 }

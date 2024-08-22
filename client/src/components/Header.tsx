@@ -5,6 +5,7 @@ import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaBars } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 const iconSize = 21;
 
@@ -13,6 +14,7 @@ const Header: React.FC = () => {
   const headerMenuToggle = () => {
     setHeaderMenuState(!headerMenuState);
   };
+  const { cart, setCart } = useAppContext();
 
   return (
     <>
@@ -53,7 +55,7 @@ const Header: React.FC = () => {
               className="hidden sm:flex items-center justify-center flex-row m-1 sm:m-2 h-full p-2 hover:text-primary-600"
             >
               <FaCartShopping size={iconSize} />
-              <span className="ml-2 transition">Sepetim</span>
+              <span className="ml-2 transition">Sepetim ({cart.length})</span>
             </a>
           </div>
           <div className="flex sm:hidden">
@@ -84,7 +86,7 @@ const Header: React.FC = () => {
           className="flex items-center justify-start flex-row p-4 hover:text-primary-600 w-10/12"
         >
           <FaCartShopping size={iconSize} />
-          <span className="ml-2 transition">Sepetim</span>
+          <span className="ml-2 transition">Sepetim ({cart.length})</span>
         </a>
       </div>
     </>
