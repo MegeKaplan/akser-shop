@@ -167,10 +167,10 @@ const AuthForm: React.FC = () => {
               </div>
             )}
             <button
-              className={`border p-2.5 overflow-hidden rounded-md w-full bg-primary-500 text-white hover:bg-primary-600 transition disabled:bg-primary-100 disabled:text-primary-500 disabled:cursor-not-allowed mb-2 ${
+              className={`border p-2.5 overflow-hidden rounded-md w-full transition disabled:bg-primary-100 disabled:text-primary-500 disabled:cursor-not-allowed mb-2 ${
                 !isValid
-                  ? "bg-primary-100 !text-primary-500 cursor-not-allowed hover:bg-primary-100"
-                  : ""
+                  ? "bg-primary-100 text-primary-500 cursor-not-allowed hover:bg-primary-100 "
+                  : "bg-primary-500 text-white hover:bg-primary-600"
               }`}
               // disabled={!isValid}
             >
