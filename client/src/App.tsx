@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastifyContainerConfig } from "./config/toastifyConfig";
+import Auth from "./pages/Auth";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
+        <Route path="/auth" element={<Auth />} />
       </Routes>
       <Footer />
       <ToastContainer {...toastifyContainerConfig} />
