@@ -6,6 +6,7 @@ import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const config = dotenv.config();
 
@@ -21,6 +22,7 @@ app.use("/api", userRoutes);
 app.use("/api", productRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", uploadRoutes);
+app.use("/api", authRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is running..." });
