@@ -17,6 +17,16 @@ export const registerUser = async (req, res) => {
       return res.status(500).json({ message: MESSAGES.USER_ALREADY_EXISTS });
     }
 
+    const existingPhoneNumber = await db("users")
+      .select("*")
+      .where({ phone_number })
+      .first();
+    if (existingPhoneNumber) {
+      return res
+        .status(500)
+        .json({ message: MESSAGES.PHONE_NUMBER_ALREADY_EXISTS });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const [userId] = await db("users").insert({

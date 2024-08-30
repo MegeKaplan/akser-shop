@@ -9,6 +9,7 @@ export const MESSAGES = {
   USER_REGISTER_SUCCESS: "Kullanıcı oluşturma işlemi başarılı.",
   USER_LOGIN_SUCCESS: "Kullanıcı giriş işlemi başarılı.",
   USER_WRONG_PASSWORD: "Kullanıcı şifresi yanlış!",
+  PHONE_NUMBER_ALREADY_EXISTS: "Telefon numarası zaten mevcut!",
   PRODUCTS_FETCH_SUCCESS: "Ürünler başarıyla getirildi.",
   PRODUCT_FETCH_SUCCESS: "Ürün bilgileri başarıyla getirildi.",
   PRODUCT_CREATE_SUCCESS: "Ürün başarıyla oluşturuldu.",
