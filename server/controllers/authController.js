@@ -75,7 +75,7 @@ export const authUser = async (req, res) => {
 
     res.status(201).json({
       message: MESSAGES.USER_LOGIN_SUCCESS,
-      response: { token },
+      response: { userId: existingUser.id, token },
     });
   } catch (error) {
     res
