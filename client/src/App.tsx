@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/auth/:page" element={<Auth />} />
       </Routes>
       <Footer />
       <ToastContainer {...toastifyContainerConfig} />

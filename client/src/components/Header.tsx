@@ -3,7 +3,7 @@ import Nav from "./Nav";
 import { FaSearch } from "react-icons/fa";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
-import { FaBars } from "react-icons/fa6";
+import { FaBars, FaUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 
@@ -15,6 +15,9 @@ const Header: React.FC = () => {
     setHeaderMenuState(!headerMenuState);
   };
   const { cart, setCart } = useAppContext();
+  const { token, setToken } = useAppContext();
+
+  const isAuth = token ? true : false;
 
   return (
     <>
@@ -43,13 +46,19 @@ const Header: React.FC = () => {
             </button>
           </div>
           <div className="flex items-center justify-center flex-row">
-            <a
-              href="#"
+            <Link
+              to={isAuth ? "/account" : "/auth/login"}
               className="hidden sm:flex items-center justify-center flex-row m-1 sm:m-2 h-full p-2 hover:text-primary-600"
             >
-              <FaArrowRightToBracket size={iconSize} />
-              <span className="ml-2 transition">Giriş Yap</span>
-            </a>
+              {isAuth ? (
+                <FaUser size={iconSize} />
+              ) : (
+                <FaArrowRightToBracket size={iconSize} />
+              )}
+              <span className="ml-2 transition">
+                {isAuth ? "Hesabım" : "Giriş Yap"}
+              </span>
+            </Link>
             <a
               href="#"
               className="hidden sm:flex items-center justify-center flex-row m-1 sm:m-2 h-full p-2 hover:text-primary-600"
@@ -74,13 +83,19 @@ const Header: React.FC = () => {
           (headerMenuState ? "flex" : "hidden")
         }
       >
-        <a
-          href="#"
+        <Link
+          to={isAuth ? "/account" : "/auth/login"}
           className="flex items-center justify-start flex-row p-4 hover:text-primary-600 w-10/12 border-b-[1px]"
         >
-          <FaArrowRightToBracket size={iconSize} />
-          <span className="ml-2 transition">Giriş Yap</span>
-        </a>
+          {isAuth ? (
+            <FaUser size={iconSize} />
+          ) : (
+            <FaArrowRightToBracket size={iconSize} />
+          )}
+          <span className="ml-2 transition">
+            {isAuth ? "Hesabım" : "Giriş Yap"}
+          </span>
+        </Link>
         <a
           href="#"
           className="flex items-center justify-start flex-row p-4 hover:text-primary-600 w-10/12"

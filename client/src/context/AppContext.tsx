@@ -3,8 +3,10 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 interface AppContextProps {
   cart: any[];
   setCart: React.Dispatch<React.SetStateAction<object[]>>;
-  count: number;
-  setCount: React.Dispatch<React.SetStateAction<number>>;
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -13,12 +15,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<any[]>(
     JSON.parse(localStorage.getItem("cart") || "[]")
   );
-  const [count, setCount] = useState(0);
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
 
   localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("token", token ? String(token) : "");
+  localStorage.setItem("userId", userId ? String(userId) : "");
 
   return (
-    <AppContext.Provider value={{ cart, setCart, count, setCount }}>
+    <AppContext.Provider
+      value={{ cart, setCart, token, setToken, userId, setUserId }}
+    >
       {children}
     </AppContext.Provider>
   );

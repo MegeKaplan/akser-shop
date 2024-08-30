@@ -1,6 +1,6 @@
 import { Bounce, ToastOptions } from "react-toastify";
 
-export const toastifyContainerConfig: ToastOptions = {
+const toastifyConfig: ToastOptions = {
   position: "top-right",
   autoClose: 3000,
   hideProgressBar: false,
@@ -13,15 +13,10 @@ export const toastifyContainerConfig: ToastOptions = {
   transition: Bounce,
 };
 
+export const toastifyContainerConfig: ToastOptions = {
+  ...toastifyConfig,
+};
+
 export const toastifyEmitterConfig: ToastOptions = {
-  position: "top-right",
-  autoClose: 3000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnFocusLoss: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: "light",
-  transition: Bounce,
+  ...toastifyConfig,
 };

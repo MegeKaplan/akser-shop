@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { MESSAGES } from "../constants/messages";
+import axios from "axios";
+import { useAppContext } from "../context/AppContext";
+import { useNavigate, useParams } from "react-router-dom";
+import { toastifyEmitterConfig } from "../config/toastifyConfig";
 
 const AuthForm: React.FC = () => {
-  const [signUp, setSignUp] = useState(true);
+  const { page } = useParams();
+  const [signUp, setSignUp] = useState(page === "login" ? false : true || true);
   const [isValid, setIsValid] = useState(false);
   const [authData, setAuthData] = useState({
     name: "",
@@ -11,6 +17,15 @@ const AuthForm: React.FC = () => {
     password: "",
     phone_number: "",
   });
+  const { token, setToken } = useAppContext();
+  const { userId, setUserId } = useAppContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    signUp ? navigate("/auth/register") : navigate("/auth/login");
+  }, [signUp]);
+
+  // signUp ? (document.title = "Kaydol") : (document.title = "Giriş Yap");
 
   const validateAuthData = (data: {
     name: string;
@@ -22,31 +37,31 @@ const AuthForm: React.FC = () => {
     const errors: string[] = [];
 
     if (!data.name.trim() && signUp) {
-      errors.push("İsim boş bırakılamaz.");
+      errors.push(MESSAGES.NAME_REQUIRED);
     }
 
     if (!data.surname.trim() && signUp) {
-      errors.push("Soyisim boş bırakılamaz.");
+      errors.push(MESSAGES.SURNAME_REQUIRED);
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!data.email.trim()) {
-      errors.push("E-posta boş bırakılamaz.");
+      errors.push(MESSAGES.EMAIL_REQUIRED);
     } else if (!emailRegex.test(data.email)) {
-      errors.push("Geçersiz e-posta adresi.");
+      errors.push(MESSAGES.EMAIL_INVALID);
     }
 
     if (!data.password.trim()) {
-      errors.push("Şifre boş bırakılamaz.");
+      errors.push(MESSAGES.PASSWORD_REQUIRED);
     } else if (data.password.length < 6) {
-      errors.push("Şifre en az 6 karakter olmalıdır.");
+      errors.push(MESSAGES.PASSWORD_LENGTH);
     }
 
     const phoneRegex = /^[0-9]{10,15}$/;
     if (!data.phone_number.trim() && signUp) {
-      errors.push("Telefon numarası boş bırakılamaz.");
+      errors.push(MESSAGES.PHONE_REQUIRED);
     } else if (!phoneRegex.test(data.phone_number) && signUp) {
-      errors.push("Geçersiz telefon numarası.");
+      errors.push(MESSAGES.PHONE_INVALID);
     }
 
     if (errors.length === 0) {
@@ -69,13 +84,37 @@ const AuthForm: React.FC = () => {
     if (errors.length > 0) {
       errors.map((error) => toast.error(error));
     } else {
-      console.log("Auth Data: ", authData);
+      try {
+        const response = signUp
+          ? await axios.post(
+              `${import.meta.env.VITE_API_URL}/auth/register`,
+              authData
+            )
+          : await axios.post(
+              `${import.meta.env.VITE_API_URL}/auth/login`,
+              authData
+            );
+
+        setToken(response.data.response.token);
+        setUserId(String(response.data.response.userId));
+
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          setTimeout(() => {
+            navigate("/");
+          }, Number(toastifyEmitterConfig.autoClose));
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
   return (
     <div className="w-auto h-auto  md:h-[90vh] flex items-center justify-center flex-col md:flex-row md:m-5 md:rounded-3xl overflow-hidden md:border">
-      <div className="relative md:mb-0 mb-5 w-full h-72 md:w-2/5 md:h-full md:before:hidden before:opacity-50 before:content-[''] before:w-full before:h-full before:bg-black before:absolute before:top-0 before:left-0">
+      <div className="relative md:mb-0 mb-5 w-full h-72 md:w-2/5 md:h-full md:before:hidden before:opacity-50 before:content-[''] before:w-full before:h-full before:bg-black before:absolute before:top-0 before:left-0 select-none">
         <img
           className="w-full h-full object-cover"
           src="https://snappix.netlify.app/app/imgs/bg_auth.jpg"
@@ -134,7 +173,8 @@ const AuthForm: React.FC = () => {
                 value={authData.email}
                 onChange={onChangeHandler}
                 name="email"
-                type="email"
+                // type="email"
+                type="text"
                 placeholder="E-Posta adresinizi girin"
               />
             </div>
