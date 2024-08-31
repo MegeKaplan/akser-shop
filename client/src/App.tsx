@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toastifyContainerConfig } from "./config/toastifyConfig";
 import Auth from "./pages/Auth";
 import CategoryProducts from "./pages/CategoryProducts";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/category/:categoryId" element={<CategoryProducts />} />
         <Route path="/auth/:page" element={<Auth />} />

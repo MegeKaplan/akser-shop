@@ -59,13 +59,16 @@ const Header: React.FC = () => {
                 {isAuth ? "Hesabım" : "Giriş Yap"}
               </span>
             </Link>
-            <a
-              href="#"
+            <Link
+              to={"/cart"}
               className="hidden sm:flex items-center justify-center flex-row m-1 sm:m-2 h-full p-2 hover:text-primary-600"
             >
               <FaCartShopping size={iconSize} />
-              <span className="ml-2 transition">Sepetim ({cart.length})</span>
-            </a>
+              <span className="ml-2 transition">
+                Sepetim (
+                {cart.reduce((acc, item) => acc + item.orderQuantity, 0)})
+              </span>
+            </Link>
           </div>
           <div className="flex sm:hidden">
             <FaBars
@@ -96,13 +99,15 @@ const Header: React.FC = () => {
             {isAuth ? "Hesabım" : "Giriş Yap"}
           </span>
         </Link>
-        <a
-          href="#"
+        <Link
+          to={"/cart"}
           className="flex items-center justify-start flex-row p-4 hover:text-primary-600 w-10/12"
         >
           <FaCartShopping size={iconSize} />
-          <span className="ml-2 transition">Sepetim ({cart.length})</span>
-        </a>
+          <span className="ml-2 transition">
+            Sepetim ({cart.reduce((acc, item) => acc + item.orderQuantity, 0)})
+          </span>
+        </Link>
       </div>
     </>
   );
