@@ -1,5 +1,6 @@
 import db from "../config/db/db_conn.js";
 import { MESSAGES } from "../constants/messages.js";
+import bcrypt from "bcryptjs";
 
 export const getUsers = async (req, res) => {
   const query = req.query;
@@ -56,7 +57,9 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const updatedUser = { ...req.body };
+    const updatedUserPassword = req.body.password;
+    const updatedUserPasswordHash = await bcrypt.hash(updatedUserPassword, 10);
+    const updatedUser = { ...req.body, password: updatedUserPasswordHash };
     const user = await db("users").select("*").where({ id: userId }).first();
     if (user) {
       await db("users")
