@@ -17,7 +17,7 @@ export const MESSAGES: Messages = {
   CONTENT_LOADING: "İçerik yükleniyor...",
   ERROR_OCCURRED: "Bir hata oluştu!",
   PRODUCT_NOT_FOUND: "Ürün bulunamadı!",
-  CATEGORY_NOT_FOUND: "Lategori bulunamadı!",
+  CATEGORY_NOT_FOUND: "Kategori bulunamadı!",
   NAME_REQUIRED: "İsim boş bırakılamaz!",
   SURNAME_REQUIRED: "Soyisim boş bırakılamaz!",
   EMAIL_REQUIRED: "E-posta boş bırakılamaz!",
