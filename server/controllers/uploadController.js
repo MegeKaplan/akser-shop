@@ -2,7 +2,7 @@ import uploadFileUtil from "../utils/uploadFileUtil.js";
 import { MESSAGES } from "../constants/messages.js";
 
 export const uploadFile = async (req, res) => {
-  const response = await uploadFileUtil(req.files);
+  const response = await uploadFileUtil(req.files, req.name);
   if (!response.isSuccess) {
     res
       .status(500)
