@@ -11,10 +11,10 @@ const Dashboard: React.FC = () => {
       <Sidebar />
       <div className="flex-grow-1 size-full bg-secondary-50 rounded-xl ml-4 overflow-y-scroll p-3">
         <Routes>
-          <Route path="/" element={<AddProduct />} />
+          <Route path="/" element={<ProductList />} />
           <Route path="/list-products" element={<ProductList />} />
           <Route path="/add-product" element={<AddProduct />} />
-          <Route path="/update-product" element={<UpdateProduct />} />
+          <Route path="/update-product/:id" element={<UpdateProduct />} />
         </Routes>
       </div>
     </div>

@@ -2,23 +2,34 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { MESSAGES } from "../constants/messages";
+import { useParams, useNavigate } from "react-router-dom";
 
-const AddProduct: React.FC = () => {
-  const [product, setProduct] = useState({
-    name: "",
-    description: "",
-    price: 0,
-    category_id: 0,
-    stock_quantity: 0,
-    dimensions: "",
-    tags: [],
-    is_featured: false,
-    image_urls: [],
-    thumbnail_url: "",
-  });
+const UpdateProduct: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [product, setProduct] = useState<any>(undefined);
   const [images, setImages] = useState<File[]>([]);
-  const [imageUrls, setImageUrls] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/products/${id}`
+        );
+        setProduct({
+          ...response.data.response,
+          image_urls: JSON.parse(response.data.response.image_urls),
+          tags: JSON.parse(response.data.response.tags).join(","),
+        });
+      } catch (err) {
+        console.error(err);
+        toast.error(MESSAGES.ERROR_OCCURRED);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -36,23 +47,72 @@ const AddProduct: React.FC = () => {
     fetchCategories();
   }, []);
 
+  const uploadImages = async (images: any) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("name", product.name);
+
+      images.forEach((image: any) => {
+        formData.append("files", image);
+      });
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/upload`,
+        formData
+      );
+
+      return response.data.response;
+    } catch (error) {
+      console.log(error);
+      toast.error(MESSAGES.ERROR_OCCURRED);
+    }
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, value } = e.target;
-    if (name === "tags") {
-      const tagArray: any = value.split(",").map((tag) => tag.trim());
-      setProduct({ ...product, [name]: tagArray });
-    } else {
-      setProduct({ ...product, [name]: value });
-    }
+    setProduct({ ...product, [name]: value });
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setProduct({ ...product, [name]: checked });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      var image_urls = await uploadImages(images);
+
+      const { id, created_at, updated_at, ...restOfProduct } = product;
+
+      const formattedProduct =
+        image_urls.length > 0
+          ? {
+              ...restOfProduct,
+              image_urls: image_urls,
+              tags: product.tags.split(",").map((tag: string) => tag.trim()),
+            }
+          : {
+              ...restOfProduct,
+              tags: product.tags.split(",").map((tag: string) => tag.trim()),
+            };
+
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL}/products/${id}`,
+        formattedProduct
+      );
+
+      toast.success(response.data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error(MESSAGES.ERROR_OCCURRED);
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,89 +121,69 @@ const AddProduct: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    // uploadImages(images).then((imageUrlss) => {
-    //   console.log(imageUrlss);
-    //   setProduct({
-    //     ...product,
-    //     image_urls: imageUrlss,
-    //     thumbnail_url: imageUrlss[0],
-    //   });
-    // });
-    const uploadImages = async (images: any) => {
+  const deleteProduct = async () => {
+    var deleteValidation = confirm(
+      `${product.name} isimli ürünü silmek istediğinize emin misiniz? (Bu işlem geri alınamaz!)`
+    );
+    if (deleteValidation) {
       try {
-        const formData = new FormData();
-        formData.append("name", product.name);
-
-        images.forEach((image: any) => {
-          formData.append("files", image);
-        });
-
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/upload`,
-          formData
+        const response = await axios.delete(
+          `${import.meta.env.VITE_API_URL}/products/${id}`
         );
-
-        console.log(response.data.response);
-        setImageUrls(response.data.response);
-        setProduct({
-          ...product,
-          image_urls: response.data.response,
-          thumbnail_url: response.data.response[0],
-        });
-        return response.data.response;
+        toast.success(response.data.message);
+        navigate("/admin/dashboard/list-products");
       } catch (error) {
-        console.error(error);
+        console.log(error);
         toast.error(MESSAGES.ERROR_OCCURRED);
       }
-    };
-    uploadImages(images);
-  }, [images]);
+    }
+  };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const changeProductStatus = async () => {
     try {
-      console.log(product);
-
-      if (product.image_urls.length === 0) {
-        toast.error("Ürün resmi eklenmesi zorunludur!");
-        return;
-      }
-
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/products`,
-        product
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL}/products/${id}`,
+        { is_active: !product.is_active }
       );
-
-      console.log(response.data);
       toast.success(response.data.message);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error(MESSAGES.ERROR_OCCURRED);
     }
   };
+
+  if (!product) {
+    return <div>Ürün bilgileri yükleniyor...</div>;
+  }
 
   return (
     <div className="w-full max-w-3xl mx-auto bg-white p-8 rounded-md shadow-md">
       <h1 className="text-2xl font-bold mb-6">Yeni Ürün Ekle</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Image Upload */}
-        <div className="">
-          {images.length > 0 && (
+        <div>
+          {product.image_urls.length > 0 && (
             <label className="block font-semibold mb-2">
               Seçilen Ürün Resimleri
             </label>
           )}
           <div className="flex items-center justify-start flex-row mb-4 overflow-x-scroll">
-            {images.map((image, index) => (
-              <img
-                key={index}
-                src={URL.createObjectURL(image)}
-                alt={`Selected image ${index + 1}`}
-                className="size-28 object-cover rounded-md m-1"
-              />
-            ))}
+            {images.length > 0
+              ? images.map((image: any, index: number) => (
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(image)}
+                    alt={`Selected image ${index + 1}`}
+                    className="size-28 object-cover rounded-md m-1"
+                  />
+                ))
+              : product.image_urls.map((url: any, index: number) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Selected image ${index + 1}`}
+                    className="size-28 object-cover rounded-md m-1"
+                  />
+                ))}
           </div>
           <label className="block font-semibold">Ürün Resmi Seç</label>
           <input
@@ -155,8 +195,6 @@ const AddProduct: React.FC = () => {
             className="w-full mt-1 p-2 border rounded-md"
           />
         </div>
-
-        {/* Name */}
         <div>
           <label className="block font-semibold">Ürün İsmi</label>
           <input
@@ -168,8 +206,6 @@ const AddProduct: React.FC = () => {
             required
           />
         </div>
-
-        {/* Description */}
         <div>
           <label className="block font-semibold">Ürün Açıklaması</label>
           <textarea
@@ -180,8 +216,6 @@ const AddProduct: React.FC = () => {
             rows={4}
           />
         </div>
-
-        {/* Price */}
         <div>
           <label className="block font-semibold">Ürün Fiyatı</label>
           <input
@@ -194,8 +228,6 @@ const AddProduct: React.FC = () => {
             required
           />
         </div>
-
-        {/* Category */}
         <div>
           <label className="block font-semibold">Ürün Kategorisi</label>
           <select
@@ -213,8 +245,6 @@ const AddProduct: React.FC = () => {
             ))}
           </select>
         </div>
-
-        {/* Stock Quantity */}
         <div>
           <label className="block font-semibold">Ürün Stoğu</label>
           <input
@@ -224,10 +254,9 @@ const AddProduct: React.FC = () => {
             onChange={handleInputChange}
             className="w-full mt-1 p-2 border rounded-md"
             required
+            step={1}
           />
         </div>
-
-        {/* Dimensions */}
         <div>
           <label className="block font-semibold">Ürün Boyutları</label>
           <input
@@ -238,8 +267,6 @@ const AddProduct: React.FC = () => {
             className="w-full mt-1 p-2 border rounded-md"
           />
         </div>
-
-        {/* Tags */}
         <div>
           <label className="block font-semibold">Ürün Etiketleri</label>
           <input
@@ -250,28 +277,31 @@ const AddProduct: React.FC = () => {
             className="w-full mt-1 p-2 border rounded-md"
           />
         </div>
-
-        {/* Is Featured */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            name="is_featured"
-            checked={product.is_featured}
-            onChange={handleCheckboxChange}
-            className="mr-2"
-          />
-          <label className="font-semibold">
-            Ürün önerilenlerde gösterilsin mi?
-          </label>
-        </div>
-
-        {/* Submit Button */}
         <div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
           >
-            Ürünü Ekle
+            Ürünü Güncelle
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => deleteProduct()}
+            className="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
+          >
+            Ürünü Sil
+          </button>
+        </div>
+        <div>
+          <button
+            disabled
+            onClick={() => changeProductStatus()}
+            className="w-full bg-emerald-500 text-white p-2 rounded-md hover:bg-emerald-600 disabled:bg-emerald-300 disabled:cursor-not-allowed"
+          >
+            {product.is_active
+              ? "Ürünü Pasif Duruma Getir"
+              : "Ürünü Aktif Duruma Getir"}
           </button>
         </div>
       </form>
@@ -279,4 +309,4 @@ const AddProduct: React.FC = () => {
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;
