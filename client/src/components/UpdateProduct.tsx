@@ -277,6 +277,18 @@ const UpdateProduct: React.FC = () => {
             className="w-full mt-1 p-2 border rounded-md"
           />
         </div>
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            name="is_featured"
+            checked={product.is_featured}
+            onChange={handleCheckboxChange}
+            className="mr-2"
+          />
+          <label className="font-semibold">
+            Ürün önerilenlerde gösterilsin mi?
+          </label>
+        </div>
         <div>
           <button
             type="submit"
