@@ -4,6 +4,9 @@ import { Route, Routes } from "react-router-dom";
 import AddProduct from "../components/AddProduct";
 import UpdateProduct from "../components/UpdateProduct";
 import ProductList from "../components/ProductList";
+import AddCategory from "../components/AddCategory";
+import CategoryList from "../components/CategoryList";
+import UpdateCategory from "../components/UpdateCategory";
 
 const Dashboard: React.FC = () => {
   return (
@@ -15,6 +18,9 @@ const Dashboard: React.FC = () => {
           <Route path="/list-products" element={<ProductList />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/update-product/:id" element={<UpdateProduct />} />
+          <Route path="/list-categories" element={<CategoryList />} />
+          <Route path="/add-category" element={<AddCategory />} />
+          <Route path="/update-category/:id" element={<UpdateCategory />} />
         </Routes>
       </div>
     </div>

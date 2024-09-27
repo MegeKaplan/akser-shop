@@ -30,6 +30,18 @@ const Sidebar: React.FC = () => {
       >
         Yeni Ürün Ekle
       </Link>
+      <Link
+        to={"/admin/dashboard/list-categories"}
+        className="w-full bg-secondary-50 p-3 rounded-xl text-lg hover:bg-secondary-200 transition cursor-pointer block mb-2 truncate"
+      >
+        Kategorileri Listele
+      </Link>
+      <Link
+        to={"/admin/dashboard/add-category"}
+        className="w-full bg-secondary-50 p-3 rounded-xl text-lg hover:bg-secondary-200 transition cursor-pointer block mb-2 truncate"
+      >
+        Yeni Kategori Ekle
+      </Link>
     </div>
   );
 };
