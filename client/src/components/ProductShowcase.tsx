@@ -79,9 +79,11 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ title, query }) => {
             <Link
               to={`/product/${product.id}`}
               key={product.id}
-              className="col-span-1 bg-secondary-100 mx-2 grid grid-rows-7 h-80 w-80 md:w-auto border rounded-lg overflow-hidden"
+              className="col-span-1 bg-secondary-100 mx-2 grid grid-rows-7 h-80 w-80 md:w-auto border rounded-lg overflow-hidden hover:scale-[.97] transition"
             >
-              <div className={"row-span-4 overflow-hidden bg-green-400 h-full"}>
+              <div
+                className={"row-span-4 overflow-hidden bg-secondary-200 h-full"}
+              >
                 <img
                   className="w-full h-full object-cover"
                   src={product.thumbnail_url}
@@ -96,8 +98,8 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ title, query }) => {
                 <h2 className="text-lg font-semibold row-span-1 truncate">
                   {product.name}
                 </h2>
-                <p className="text-md text-gray-700 row-span-1">
-                  ${product.price}
+                <p className="text-md text-secondary-700 row-span-1">
+                  {product.price}₺
                 </p>
                 {tagsArray.length > 0 ? (
                   <div
@@ -109,14 +111,14 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ title, query }) => {
                     {tagsArray.map((tag: string, index: number) => (
                       <span
                         key={index}
-                        className="bg-gray-300 text-center text-sm py-1 px-2 rounded col-span-1 truncate"
+                        className="bg-secondary-300 text-center text-sm py-1 px-2 rounded col-span-1 truncate"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
                 ) : (
-                  <span className="bg-gray-300 text-center text-sm py-1 px-2 rounded col-span-1">
+                  <span className="bg-secondary-300 text-center text-sm py-1 px-2 rounded col-span-1">
                     Önerilen Ürün
                   </span>
                 )}

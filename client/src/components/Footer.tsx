@@ -14,9 +14,9 @@ const Footer: React.FC = () => {
     <footer className="bg-secondary-100 w-full border mt-6 flex items-center justify-center flex-col h-auto">
       <div className="grid grid-cols-1 md:grid-cols-3 h-full">
         <div className="p-8 flex items-center justify-between flex-col">
-          <div className="w-full mb-4 text-center md:text-left">
-            <Link to={"/"} className="w-auto text-2xl sm:text-3xl">
-              LOGO
+          <div className="w-full mb-2 text-center md:text-left">
+            <Link to={"/"}>
+              <img src="logo.png" alt="LOGO" className="h-20" />
             </Link>
           </div>
           <div className="w-full mb-4">

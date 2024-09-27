@@ -69,7 +69,7 @@ const Nav: React.FC = () => {
         <div key={index} className="flex items-center justify-center">
           <Link
             to={`/category/${category.id}`}
-            className="bg-secondary-150 px-3 py-2 m-1.5 whitespace-nowrap text-lg cursor-pointer hover:bg-primary-400 transition rounded-full"
+            className="bg-secondary-150 px-3 py-2 m-1.5 whitespace-nowrap text-lg cursor-pointer hover:bg-primary-400 transition rounded-full border-secondary-200 border-[1px] hover:border-primary-400"
           >
             {category.name}
           </Link>
