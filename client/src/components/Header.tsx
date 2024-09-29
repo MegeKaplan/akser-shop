@@ -24,7 +24,7 @@ const Header: React.FC = () => {
       <header className="bg-secondary-50 w-full h-32 sm:h-32 grid grid-rows-7 border-b-[1px] place-items-center overflow-hidden pb-1.5">
         <div className="flex flex-row items-center justify-between w-full px-5 h-full row-span-4">
           <Link to={"/"}>
-            <img src="logo.png" alt="LOGO" className="h-14" />
+            <img src="logo.png" alt="LOGO" className="w-28 md:h-14" />
           </Link>
           {/* <div className="flex sm:hidden p-3">
           <FaSearch size={iconSize} />
